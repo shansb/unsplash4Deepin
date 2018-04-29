@@ -1,4 +1,4 @@
-package top.imshan.wallpaper;
+package top.imshan.wallpaper.os;
 
 
 
@@ -8,11 +8,10 @@ import java.io.InputStreamReader;
 
 /**
  * 执行命令
- * @author shan
+ * @author shansb
  * @date 2018-04-26
  */
 public class BashExecutor {
-
     /**
      * 判断系统中是否存在该命令
      * @param command 命令
@@ -56,7 +55,7 @@ public class BashExecutor {
      * @param ps process
      * @throws IOException
      */
-    private void printResult( Process ps) throws IOException {
+    private static void printResult(Process ps) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(ps.getErrorStream()));
         StringBuffer sb = new StringBuffer();
         String line;
@@ -68,7 +67,7 @@ public class BashExecutor {
         print(result);
     }
 
-    private void print(String string) {
+    private static void print(String string) {
         System.out.println(string);
     }
 
@@ -78,7 +77,7 @@ public class BashExecutor {
      * @param executable 可执行的命令字符串
      * @return 是否执行成功
      */
-    private boolean execute(String executable) {
+    public static boolean execute(String executable) {
         Process ps;
         try {
             ps = Runtime.getRuntime().exec(executable);

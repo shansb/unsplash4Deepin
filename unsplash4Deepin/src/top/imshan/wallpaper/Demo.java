@@ -1,15 +1,23 @@
 package top.imshan.wallpaper;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class Demo {
 	public static void main(String[] args) throws IOException {
-		String fiel = System.getProperty("user.home")+"/Pictures/test/1.jpg";
-		System.out.println( fiel);
-		File file = new File(fiel);
-		if (!file.exists()) {
-			file.createNewFile();
-		}
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                WallpaperUI ui = new WallpaperUI();
+                ui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                ui.setVisible(true);
+            }
+        });
 	}
+
+
 }

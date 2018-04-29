@@ -21,9 +21,9 @@ public class UrlHandler {
      * 发起http请求并获取结果
      * @param requestUrl 请求地址
      */
-    public JsonObject getXpath(String requestUrl){
+    public static JsonObject getXpath(String requestUrl){
         String res="";
-        JsonObject object = null;
+        JsonObject object = new JsonObject();
         StringBuffer buffer = new StringBuffer();
         try{
             URL url = new URL(requestUrl);
@@ -54,13 +54,13 @@ public class UrlHandler {
      * @return map
      */
     @SuppressWarnings("unchecked")
-	public Map<String, Object> json2Map(JsonObject json){
+	public static Map<String, Object> json2Map(JsonObject json){
     	Gson gson = new Gson();
     	Map<String, Object> jsonMap = gson.fromJson(json, Map.class);
     	return jsonMap;
     }
     
-    public void download(String urlString, String filename,String savePath){ 
+    public static void download(String urlString, String filename,String savePath){
     	try {
 			// 构造URL    
 			URL url = new URL(urlString);    
@@ -69,8 +69,8 @@ public class UrlHandler {
 			//设置请求超时为5s    
 			con.setConnectTimeout(5*1000);    
 			// 输入流    
-			int code=con.getResponseCode();  
-			
+			int code=con.getResponseCode();
+            System.out.println("response:"+con.getResponseMessage());
 			if(code == 200){  //响应成功  
 			    BufferedImage image=ImageIO.read(con.getInputStream()); //读取图片文件流  
 			    String path=savePath+filename;  //创建存储图片文件的路径  
@@ -85,4 +85,5 @@ public class UrlHandler {
 			e.printStackTrace();
 		}   
     }
+
 }
