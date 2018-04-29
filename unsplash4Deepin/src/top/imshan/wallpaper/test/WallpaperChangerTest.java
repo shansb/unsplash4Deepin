@@ -2,15 +2,15 @@ package top.imshan.wallpaper.test;
 
 import org.junit.Before;
 import org.junit.Test;
-import top.imshan.wallpaper.WallpaperChanger;
+import top.imshan.wallpaper.BashExecutor;
 
 import static org.junit.Assert.*;
 
 public class WallpaperChangerTest {
-    WallpaperChanger changer;
+    BashExecutor changer;
     @Before
     public void setUp() throws Exception {
-        changer = new WallpaperChanger();
+        changer = new BashExecutor();
     }
 
     @Test
