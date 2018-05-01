@@ -2,11 +2,11 @@ package top.imshan.wallpaper;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
 import com.google.gson.JsonObject;
+
 import top.imshan.wallpaper.os.OSWallpaper;
 
 /**
@@ -43,7 +43,6 @@ public class WallpaperChanger {
      * 随机壁纸
      * @param automatic 是否自动下载大图
      */
-	@SuppressWarnings("unchecked")
 	public void randomWallpaper(boolean automatic) {
 		/*
         1. 检查路径是否存在
@@ -76,7 +75,8 @@ public class WallpaperChanger {
      * 从接口获得图片地址
      * @return 是否成功获得
      */
-    private boolean getUrlsFromAPI() {
+    @SuppressWarnings("unchecked")
+	private boolean getUrlsFromAPI() {
         JsonObject json = UrlHandler.getXpath(api);
         Map<String, Object> pictureInfo = UrlHandler.json2Map(json);
         if (null == pictureInfo){

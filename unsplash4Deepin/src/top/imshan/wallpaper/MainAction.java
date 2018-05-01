@@ -6,12 +6,6 @@ package top.imshan.wallpaper;
  */
 public class MainAction {
     public static void main(String[] args) {
-        /*
-        1. 检查路径是否存在
-        2. 随机下载需要的图片thumb
-        3. 随机下载全尺寸图片
-        4. 设置壁纸
-         */
-
+    	
     }
 }
