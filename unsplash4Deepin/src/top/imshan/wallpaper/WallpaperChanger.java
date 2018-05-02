@@ -8,6 +8,7 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 
 import top.imshan.wallpaper.os.OSWallpaper;
+import top.imshan.wallpaper.os.OSWallpaperFactory;
 
 /**
  * 壁纸更换实现
@@ -39,6 +40,13 @@ public class WallpaperChanger {
      * 系统壁纸更换服务
      */
     private OSWallpaper wallpaper;
+
+    public WallpaperChanger() {
+        this.savePath = System.getProperty("user.home")+"/Pictures/unsplashWallpaper/";
+        this.api = "https://api.unsplash.com/photos/random?client_id=19aada4dabad279cf21e37342f6277d865e58b1336ba7d6f5a2038793d35ea7c";
+        this.wallpaper = OSWallpaperFactory.getWallpaperInstance();
+    }
+
     /**
      * 随机壁纸
      * @param automatic 是否自动下载大图
