@@ -113,9 +113,21 @@ public class WallpaperUI extends JFrame{
             MenuItem refreshItem = new MenuItem("Refresh");
             refreshItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    changer.randomWallpaper(true);
+                    synchronized (changer.lock){
+                        changer.lock.notify();
+                    }
                 }
             });
+
+            MenuItem settingItem = new MenuItem("Setting");
+            settingItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    setVisible(true);
+                    toFront();
+                }
+            });
+            menu.add(settingItem);
             menu.add(refreshItem);
             menu.add(quitItem);
             icon.setToolTip("Wallpaper");

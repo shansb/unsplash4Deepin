@@ -16,6 +16,7 @@ import top.imshan.wallpaper.os.OSWallpaperFactory;
  *
  */
 public class WallpaperChanger {
+    public final Object lock = new Object();
     /**
      * 图片保存路径
      */
@@ -65,7 +66,7 @@ public class WallpaperChanger {
             return;
         }
 
-		UrlHandler.download(thumbUrl, "review.jpg", savePath);
+//		UrlHandler.download(thumbUrl, "review.jpg", savePath);
 		if (automatic) {
 		    String fileName = format(new Date()) + ".jpg";
 		    UrlHandler.download(fullUrl, fileName,savePath);
