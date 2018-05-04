@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import sun.security.x509.X509CertImpl;
 
 public class UrlHandler {
     /**
@@ -22,7 +23,6 @@ public class UrlHandler {
      * @param requestUrl 请求地址
      */
     public static JsonObject getXpath(String requestUrl){
-        String res="";
         JsonObject object = new JsonObject();
         StringBuffer buffer = new StringBuffer();
         try{
@@ -37,11 +37,11 @@ public class UrlHandler {
                 }
                 br.close();
                 new InputStreamReader(urlCon.getInputStream(),"utf-8").close();
-                urlCon.getInputStream().close();
-                res = buffer.toString();
                 JsonParser parse =new JsonParser();
-                object = (JsonObject) parse.parse(res);
+                object = (JsonObject) parse.parse(buffer.toString());
             }
+            urlCon.getInputStream().close();
+            urlCon.disconnect();
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -59,31 +59,38 @@ public class UrlHandler {
     	Map<String, Object> jsonMap = gson.fromJson(json, Map.class);
     	return jsonMap;
     }
-    
+
+    /**
+     * 单线程下载图片
+     * @param urlString url
+     * @param filename 文件名
+     * @param savePath 保存路径
+     */
     public static void download(String urlString, String filename,String savePath){
     	try {
 			// 构造URL    
 			URL url = new URL(urlString);    
 			// 打开连接    
-			HttpURLConnection con = (HttpURLConnection) url.openConnection(); 
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			//设置请求超时为5s    
-			con.setConnectTimeout(5*1000);    
+			con.setConnectTimeout(5*1000);
 			// 输入流    
 			int code=con.getResponseCode();
-            System.out.println("response:"+con.getResponseMessage());
+//            System.out.println("response:"+con.getResponseMessage());
 			if(code == 200){  //响应成功  
 			    BufferedImage image=ImageIO.read(con.getInputStream()); //读取图片文件流  
 			    String path=savePath+filename;  //创建存储图片文件的路径  
 			    File file=new File(path);  
-			    ImageIO.write(image,"jpeg",  file);  //将图片写进创建的路径  
+			    ImageIO.write(image,"jpeg",  file);  //将图片写进创建的路径
+                image = null;
 			}
+            con.getInputStream().close();
+            con.disconnect();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}   
+		}
     }
 
 }

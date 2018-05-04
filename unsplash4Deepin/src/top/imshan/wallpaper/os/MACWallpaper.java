@@ -6,7 +6,6 @@ package top.imshan.wallpaper.os;
 public class MACWallpaper extends OSWallpaper{
     @Override
     public boolean changeWallpaper(String picturePath) {
-        String cmd = "src/mac.sh "+picturePath;
-        return BashExecutor.execute(cmd);
+        return BashExecutor.execute("src/mac.sh "+picturePath);
     }
 }

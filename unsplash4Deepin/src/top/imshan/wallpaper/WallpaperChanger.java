@@ -69,11 +69,16 @@ public class WallpaperChanger {
 //		UrlHandler.download(thumbUrl, "review.jpg", savePath);
 		if (automatic) {
 		    String fileName = format(new Date()) + ".jpg";
-		    UrlHandler.download(fullUrl, fileName,savePath);
+		    BashUrlHandler.download(fullUrl, fileName,savePath);
 		    changeWallpaper(savePath+fileName);
         }
 	}
 
+    /**
+     * 更改壁纸
+     * @param file 新壁纸路径
+     * @return 是否成功执行
+     */
     private boolean changeWallpaper(String file) {
        return wallpaper.changeWallpaper(file);
     }
@@ -86,8 +91,8 @@ public class WallpaperChanger {
      */
     @SuppressWarnings("unchecked")
 	private boolean getUrlsFromAPI() {
-        JsonObject json = UrlHandler.getXpath(api);
-        Map<String, Object> pictureInfo = UrlHandler.json2Map(json);
+        JsonObject json = BashUrlHandler.getXpath(api,System.getProperty("user.home")+"/Pictures/unsplashWallpaper/APIJson.json");
+        Map<String, Object> pictureInfo = BashUrlHandler.json2Map(json);
         if (null == pictureInfo){
             return false;
         }

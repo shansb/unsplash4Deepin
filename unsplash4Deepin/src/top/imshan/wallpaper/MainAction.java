@@ -11,13 +11,16 @@ import java.util.concurrent.TimeUnit;
 public class MainAction {
     public static void main(String[] args) {
         final WallpaperChanger changer = new WallpaperChanger();
+        TrayUI ui = new TrayUI();
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while(true){
                     synchronized (changer.lock){
                         try {
+                            ui.icon.setImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resource/TrayIcon.gif")));
                             changer.randomWallpaper(true);
+                            ui.icon.setImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resource/TrayIcon16x16.png")));
                             System.out.println("Hello");
                             changer.lock.wait(TimeUnit.MINUTES.toMillis(30));
                         } catch (InterruptedException e) {
@@ -31,7 +34,7 @@ public class MainAction {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                WallpaperUI ui = new WallpaperUI(changer);
+                ui.initTrayIcon(changer);
             }
         });
     }

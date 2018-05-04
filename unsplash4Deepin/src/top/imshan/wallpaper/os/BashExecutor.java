@@ -13,13 +13,14 @@ import java.io.InputStreamReader;
  * @date 2018-04-26
  */
 public class BashExecutor {
-
-
+    /**
+     * 错误信息
+     */
     private static final String ERROR_MSG = "excute bash error";
 
 	/**
      * 打印信息
-     * @param ps process
+     * @param is InputStream
      * @throws IOException
      */
     private static String stream2String(InputStream is) throws IOException {
@@ -54,16 +55,18 @@ public class BashExecutor {
      * @return 执行结果
      */
     public static String executeWithResult(String executable) {
+        System.out.println("cmd:"+ executable);
         Process ps;
         try {
             ps = Runtime.getRuntime().exec(executable);
             ps.waitFor();
             if (ps.exitValue() == 1) {
-            	print(stream2String(ps.getErrorStream()));
+                System.err.println(stream2String(ps.getErrorStream()));
 				return ERROR_MSG;
 			} else {
 				return stream2String(ps.getInputStream());
 			}
+
         } catch (IOException e) {
             e.printStackTrace();
             return ERROR_MSG;

@@ -9,7 +9,7 @@ public class WallpaperUITest {
 
 	@Test
 	public void testWallpaperUI() {
-		WallpaperUI ui = new WallpaperUI(new WallpaperChanger());
+		WallpaperUI ui = new WallpaperUI();
 	}
 
 }
