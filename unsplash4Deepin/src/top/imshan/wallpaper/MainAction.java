@@ -2,6 +2,8 @@ package top.imshan.wallpaper;
 
 import java.awt.*;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -10,7 +12,23 @@ import java.util.concurrent.TimeUnit;
  */
 public class MainAction {
     public static void main(String[] args) {
-        final WallpaperChanger changer = new WallpaperChanger();
+        File setting = new File("setting.json");
+        System.out.println(setting.getAbsolutePath());
+        Map<String, Object> settingMap = new HashMap<>();
+        if (setting.exists()) {
+            settingMap = IOHelper.getJsonMapFromFile(setting);
+        }
+        WallpaperChanger changer = new WallpaperChanger();
+        String savePath = (String) settingMap.get("DownloadPath");
+        String api = (String) settingMap.get("API");
+        if (null != savePath) {
+            changer.setSavePath(savePath);
+        }
+        if (null != api) {
+            changer.setApi(api);
+        }
+        String cycleTime = (String) settingMap.get("CycleTime");
+        final Integer cycleMinute = cycleTime == null ? 30 : Integer.parseInt(cycleTime);
         TrayUI ui = new TrayUI();
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -22,7 +40,7 @@ public class MainAction {
                             changer.randomWallpaper(true);
                             ui.icon.setImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resource/TrayIcon16x16.png")));
                             System.out.println("Hello");
-                            changer.lock.wait(TimeUnit.MINUTES.toMillis(30));
+                            changer.lock.wait(TimeUnit.MINUTES.toMillis(cycleMinute));
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -37,5 +55,9 @@ public class MainAction {
                 ui.initTrayIcon(changer);
             }
         });
+        setting = null;
+        api = null;
+        cycleTime = null;
     }
+
 }

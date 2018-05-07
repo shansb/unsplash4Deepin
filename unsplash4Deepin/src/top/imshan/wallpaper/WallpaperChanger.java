@@ -43,7 +43,7 @@ public class WallpaperChanger {
     private OSWallpaper wallpaper;
 
     public WallpaperChanger() {
-        this.savePath = System.getProperty("user.home")+"/Pictures/unsplashWallpaper/";
+        this.savePath = System.getProperty("user.home") + "/Pictures/unsplashWallpaper/";
         this.api = "https://api.unsplash.com/photos/random?client_id=19aada4dabad279cf21e37342f6277d865e58b1336ba7d6f5a2038793d35ea7c";
         this.wallpaper = OSWallpaperFactory.getWallpaperInstance();
     }
@@ -66,7 +66,6 @@ public class WallpaperChanger {
             return;
         }
 
-//		UrlHandler.download(thumbUrl, "review.jpg", savePath);
 		if (automatic) {
 		    String fileName = format(new Date()) + ".jpg";
 		    BashUrlHandler.download(fullUrl, fileName,savePath);
@@ -91,8 +90,8 @@ public class WallpaperChanger {
      */
     @SuppressWarnings("unchecked")
 	private boolean getUrlsFromAPI() {
-        JsonObject json = BashUrlHandler.getXpath(api,System.getProperty("user.home")+"/Pictures/unsplashWallpaper/APIJson.json");
-        Map<String, Object> pictureInfo = BashUrlHandler.json2Map(json);
+        JsonObject json = BashUrlHandler.getXpath(api,savePath+".api");
+        Map<String, Object> pictureInfo = IOHelper.json2Map(json);
         if (null == pictureInfo){
             return false;
         }

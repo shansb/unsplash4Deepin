@@ -1,10 +1,14 @@
 package top.imshan.wallpaper;
 
+import top.imshan.wallpaper.os.BashExecutor;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 public class TrayUI {
     TrayIcon icon =
@@ -44,7 +48,7 @@ public class TrayUI {
         settingItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                BashExecutor.execute("gedit ../setting.json");
             }
         });
         menu.add(settingItem);

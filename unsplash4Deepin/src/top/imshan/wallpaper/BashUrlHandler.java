@@ -1,12 +1,9 @@
 package top.imshan.wallpaper;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import top.imshan.wallpaper.os.BashExecutor;
 
 import java.io.*;
-import java.util.Map;
 
 public class BashUrlHandler {
     /**
@@ -22,35 +19,9 @@ public class BashUrlHandler {
         if (!apiFile.exists()){
             return new JsonObject();
         }
-        String jsonString = "";
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(apiFile));
-            StringBuffer sb1 = new StringBuffer();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                sb1.append(line).append("\n");
-            }
-            jsonString = sb1.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        JsonParser parse =new JsonParser();
-        return (JsonObject) parse.parse(jsonString);
+        String  jsonString = IOHelper.readStringFromFile(apiFile);
+        return IOHelper.string2Json(jsonString);
 
-    }
-
-    /**
-     * 简单的转换
-     * @param json JsonObject
-     * @return map
-     */
-    @SuppressWarnings("unchecked")
-    public static Map<String, Object> json2Map(JsonObject json){
-        Gson gson = new Gson();
-        Map<String, Object> jsonMap = gson.fromJson(json, Map.class);
-        return jsonMap;
     }
 
     /**
