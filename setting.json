@@ -1,5 +1,0 @@
-{
-//    "DownloadPath": "~/Pictures/UnsplashWallpapers/",//壁纸下载地址
-    "CycleTime": "60",//壁纸刷新时间，单位是分
-    "API": "https://api.unsplash.com/photos/random?client_id=19aada4dabad279cf21e37342f6277d865e58b1336ba7d6f5a2038793d35ea7c"//可以自定义API
-}

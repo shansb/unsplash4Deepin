@@ -10,9 +10,8 @@ public class OSWallpaperFactory {
      */
     public static OSWallpaper getWallpaperInstance(){
         String os = System.getProperty("os.name");
-        if ("Mac OS X".equals(os)){
-            return new MACWallpaper();
-        } else if ("Linux".equals(os)) {
+
+        if ("Linux".equals(os)) {
         	String de = BashExecutor.executeWithResult("ps -A");
         	if (de.contains("startdde")) {
 				return new DeepinWallpaper();

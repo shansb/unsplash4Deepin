@@ -5,6 +5,10 @@ import top.imshan.wallpaper.os.BashExecutor;
 
 import java.io.*;
 
+/**
+ * bash命令执行类
+ * @author Shansb
+ */
 public class BashUrlHandler {
     /**
      * 发起http请求并获取结果

@@ -12,8 +12,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class MainAction {
     public static void main(String[] args) {
-        File setting = new File("setting.json");
-        System.out.println(setting.getAbsolutePath());
+        File setting = new File(IOHelper.settingPathName);
         Map<String, Object> settingMap = new HashMap<>();
         if (setting.exists()) {
             settingMap = IOHelper.getJsonMapFromFile(setting);
@@ -27,8 +26,14 @@ public class MainAction {
         if (null != api) {
             changer.setApi(api);
         }
-        String cycleTime = (String) settingMap.get("CycleTime");
-        final Integer cycleMinute = cycleTime == null ? 30 : Integer.parseInt(cycleTime);
+        Integer cycleTime = null;
+        try {
+            cycleTime = (String) settingMap.get("CycleTime") == null ? 1 : Integer.parseInt((String) settingMap.get("CycleTime"));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            cycleTime = 1;
+        }
+        final Integer cycleHour = cycleTime > 1 ? cycleTime : 1;
         TrayUI ui = new TrayUI();
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -39,10 +44,11 @@ public class MainAction {
                             ui.icon.setImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resource/TrayIcon.gif")));
                             changer.randomWallpaper(true);
                             ui.icon.setImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resource/TrayIcon16x16.png")));
-                            System.out.println("Hello");
-                            changer.lock.wait(TimeUnit.MINUTES.toMillis(cycleMinute));
-                        } catch (InterruptedException e) {
+                            System.gc();
+                            changer.lock.wait(TimeUnit.HOURS.toMillis(cycleHour));
+                        } catch (Exception e) {
                             e.printStackTrace();
+                            ui.icon.setImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resource/TrayIcon16x16.png")));
                         }
                     }
                 }

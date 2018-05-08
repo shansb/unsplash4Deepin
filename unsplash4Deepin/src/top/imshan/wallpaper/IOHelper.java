@@ -12,6 +12,12 @@ import java.util.Map;
  * @author Shansb
  */
 public class IOHelper {
+
+    /**
+     * 参数文件地址
+     */
+    public static final String settingPathName = System.getProperty("user.home") + "/.config/unplash4deepin/setting.json";
+
     /**
      * 从文件中读取内容生成string
      * @param file 已存在的文件

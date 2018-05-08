@@ -16,6 +16,9 @@ import top.imshan.wallpaper.os.OSWallpaperFactory;
  *
  */
 public class WallpaperChanger {
+    /**
+     * 锁
+     */
     public final Object lock = new Object();
     /**
      * 图片保存路径
@@ -43,8 +46,8 @@ public class WallpaperChanger {
     private OSWallpaper wallpaper;
 
     public WallpaperChanger() {
-        this.savePath = System.getProperty("user.home") + "/Pictures/unsplashWallpaper/";
-        this.api = "https://api.unsplash.com/photos/random?client_id=19aada4dabad279cf21e37342f6277d865e58b1336ba7d6f5a2038793d35ea7c";
+        this.savePath = System.getProperty("user.home") + "/Pictures/unsplashWallpapers/";
+        this.api = "https://api.unsplash.com/photos/random?client_id=c35c3e173211004dea1b7835216e4840618a9c6f2903689a943126eaaba20b38";
         this.wallpaper = OSWallpaperFactory.getWallpaperInstance();
     }
 
@@ -62,7 +65,7 @@ public class WallpaperChanger {
         checkPath();
 
         if (!getUrlsFromAPI()) {
-            System.out.println("无法从API中获得需要的图片地址");
+            System.err.println("无法从API中获得需要的图片地址");
             return;
         }
 
@@ -90,8 +93,14 @@ public class WallpaperChanger {
      */
     @SuppressWarnings("unchecked")
 	private boolean getUrlsFromAPI() {
-        JsonObject json = BashUrlHandler.getXpath(api,savePath+".api");
-        Map<String, Object> pictureInfo = IOHelper.json2Map(json);
+        Map<String, Object> pictureInfo = null;
+        try {
+            JsonObject json = BashUrlHandler.getXpath(api,savePath+".api");
+            pictureInfo = IOHelper.json2Map(json);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
         if (null == pictureInfo){
             return false;
         }

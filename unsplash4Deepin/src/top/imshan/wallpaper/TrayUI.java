@@ -8,11 +8,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 
+/**
+ * 系统托盘
+ * @author Shansb
+ */
 public class TrayUI {
+    /**
+     * 图标
+     */
     TrayIcon icon =
             new TrayIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resource/TrayIcon16x16.png")));
+
+    /**
+     * 初始化托盘图标行为
+     * @param changer
+     */
     public void initTrayIcon(WallpaperChanger changer) {
 //            icon.setImageAutoSize(true);
         //3.双击打开主窗口
@@ -48,7 +59,11 @@ public class TrayUI {
         settingItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BashExecutor.execute("gedit ../setting.json");
+                File file = new File(IOHelper.settingPathName);
+                if (file.exists()) {
+                    file = null;
+                    BashExecutor.execute("gedit " + IOHelper.settingPathName);
+                }
             }
         });
         menu.add(settingItem);

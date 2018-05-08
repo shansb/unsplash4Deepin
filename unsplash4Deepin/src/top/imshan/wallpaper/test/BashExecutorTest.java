@@ -2,6 +2,7 @@ package top.imshan.wallpaper.test;
 
 import org.junit.Test;
 
+import top.imshan.wallpaper.IOHelper;
 import top.imshan.wallpaper.os.BashExecutor;
 
 public class BashExecutorTest {
@@ -12,6 +13,6 @@ public class BashExecutorTest {
     }
     @Test
     public void execute(){
-        BashExecutor.execute("gedit ../setting.json");
+        BashExecutor.execute("gedit " + IOHelper.settingPathName);
     }
 }
