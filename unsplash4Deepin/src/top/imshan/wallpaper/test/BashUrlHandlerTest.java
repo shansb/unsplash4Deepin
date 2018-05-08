@@ -1,9 +1,8 @@
 package top.imshan.wallpaper.test;
 
 import org.junit.Test;
-import top.imshan.wallpaper.BashUrlHandler;
 
-import static org.junit.Assert.*;
+import top.imshan.wallpaper.BashUrlHandler;
 
 public class BashUrlHandlerTest {
 

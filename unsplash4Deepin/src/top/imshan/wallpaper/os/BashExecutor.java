@@ -34,11 +34,6 @@ public class BashExecutor {
         return result;
     }
 
-    private static void print(String string) {
-        System.out.println(string);
-    }
-
-
     /**
      * 执行命令
      * @param executable 可执行的命令字符串

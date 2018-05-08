@@ -29,9 +29,9 @@ public class WallpaperChanger {
      */
     private String api;
     /**
-     * 预览图地址
+     * 允许使用http://picsum.photos/的API
      */
-    private String thumbUrl;
+    private boolean OtherAPI =false;
     /**
      * 大图地址
      */
@@ -58,25 +58,32 @@ public class WallpaperChanger {
 	public void randomWallpaper(boolean automatic) {
 		/*
         1. 检查路径是否存在
-        2. 随机下载需要的图片thumb
-        3. 随机下载全尺寸图片
+        2. 随机下载全尺寸图片
         4. 设置壁纸
          */
         checkPath();
-
-        if (!getUrlsFromAPI()) {
-            System.err.println("无法从API中获得需要的图片地址");
-            return;
-        }
-
+        if (OtherAPI) {
+        	int screenWidth=((int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().width);
+        	int screenHeight = ((int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().height); 
+        	fullUrl = "https://picsum.photos/"+screenWidth+"/"+screenHeight+"/?random";
+		} else {
+			if (!getUrlsFromAPI()) {
+				System.err.println("无法从API中获得需要的图片地址");
+				return;
+			}			
+		}
 		if (automatic) {
-		    String fileName = format(new Date()) + ".jpg";
+			String fileName = format(new Date()) + ".jpg";
 		    BashUrlHandler.download(fullUrl, fileName,savePath);
 		    changeWallpaper(savePath+fileName);
         }
 	}
 
-    /**
+    public void setOtherAPI(boolean otherAPI) {
+		OtherAPI = otherAPI;
+	}
+
+	/**
      * 更改壁纸
      * @param file 新壁纸路径
      * @return 是否成功执行
@@ -105,9 +112,8 @@ public class WallpaperChanger {
             return false;
         }
         Map<String, Object> urlMap = (Map<String, Object>) pictureInfo.get("urls");
-        thumbUrl =(String) urlMap.get("thumb");
         fullUrl = (String) urlMap.get("full");
-        if (thumbUrl == null || fullUrl == null) {
+        if (fullUrl == null) {
             return  false;
         }
         return true;

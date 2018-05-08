@@ -79,4 +79,12 @@ public class TrayUI {
             e1.printStackTrace();
         }//将托盘图表添加到系统托盘
     }
+
+	/**
+	 * 设置托盘图标
+	 * @param path 图标路径
+	 */
+	public void setIconImage(String path) {
+		icon.setImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(path)));
+	}
 }
