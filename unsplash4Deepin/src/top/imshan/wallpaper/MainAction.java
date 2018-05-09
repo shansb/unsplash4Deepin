@@ -1,8 +1,6 @@
 package top.imshan.wallpaper;
 
 import java.awt.*;
-import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -12,9 +10,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class MainAction {
     public static void main(String[] args) {
-        Map<String, Object> settingMap = loadSettings();
+        Map<String, Object> settingMap = IOHelper.loadSettings();
         WallpaperChanger changer = new WallpaperChanger();
-        applySettings(settingMap, changer);
+        changer.applySettings(settingMap);
         final Integer cycleHour = loadCycleTime(settingMap);
         TrayUI ui = new TrayUI();
         Thread thread = new Thread(new Runnable() {
@@ -46,52 +44,19 @@ public class MainAction {
     }
 
 	/**
-	 * 加载壁纸更新循环时间（最小值及默认值为1）
+	 * 加载壁纸更新循环时间（最小值10分钟、默认值30分钟）
 	 * @param settingMap 设置
-	 * @return 更新周期（小时）
+	 * @return 更新周期（分）
 	 */
 	private static Integer loadCycleTime(Map<String, Object> settingMap) {
 		Integer cycleTime = null;
         try {
-            cycleTime = (String) settingMap.get("CycleTime") == null ? 1 : Integer.parseInt((String) settingMap.get("CycleTime"));
+            cycleTime = settingMap.get("CycleTime") == null ? 30 : Integer.parseInt((String) settingMap.get("CycleTime"));
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            cycleTime = 1;
+            cycleTime = 30;
         }
-        return cycleTime > 1 ? cycleTime : 1;
-	}
-
-	/**
-	 * 应用配置参数
-	 * @param settingMap 设置
-	 * @param changer 壁纸更换器
-	 */
-	private static void applySettings(Map<String, Object> settingMap, WallpaperChanger changer) {
-		Object savePath = settingMap.get("DownloadPath");
-		Object api = settingMap.get("API");
-		Object otherAPI = settingMap.get("EnableOtherAPI");
-        if (null != savePath) {
-            changer.setSavePath((String) savePath);
-        }
-        if (null != api) {
-            changer.setApi((String) api);
-        }
-        if(null != otherAPI) {
-        	changer.setOtherAPI((boolean) otherAPI);
-        }
-	}
-
-	/**
-	 * 加载参数
-	 * @return 参数Map
-	 */
-	private static Map<String, Object> loadSettings() {
-		File setting = new File(IOHelper.settingPathName);
-        Map<String, Object> settingMap = new HashMap<>();
-        if (setting.exists()) {
-            settingMap = IOHelper.getJsonMapFromFile(setting);
-        }
-		return settingMap;
+        return cycleTime > 10 ? cycleTime : 10;
 	}
 
 }

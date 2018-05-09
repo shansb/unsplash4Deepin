@@ -53,6 +53,25 @@ public class WallpaperChanger {
     }
 
     /**
+     * 应用配置参数
+     * @param settingMap 设置
+     */
+    public void applySettings(Map<String, Object> settingMap) {
+        Object savePath = settingMap.get("DownloadPath");
+        Object api = settingMap.get("API");
+        Object otherAPI = settingMap.get("EnableOtherAPI");
+        if (null != savePath) {
+            setSavePath((String) savePath);
+        }
+        if (null != api) {
+            setApi((String) api);
+        }
+        if(null != otherAPI) {
+            setOtherAPI((boolean) otherAPI);
+        }
+    }
+
+    /**
      * 随机壁纸
      * @param automatic 是否自动下载大图
      */

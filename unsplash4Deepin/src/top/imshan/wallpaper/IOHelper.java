@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -74,5 +75,18 @@ public class IOHelper {
         String settings = readStringFromFile(file);
         JsonObject settingsJson = string2Json(settings);
         return json2Map(settingsJson);
+    }
+
+    /**
+     * 加载参数
+     * @return 参数Map
+     */
+    static Map<String, Object> loadSettings() {
+        File setting = new File(settingPathName);
+        Map<String, Object> settingMap = new HashMap<>();
+        if (setting.exists()) {
+            settingMap = getJsonMapFromFile(setting);
+        }
+        return settingMap;
     }
 }
