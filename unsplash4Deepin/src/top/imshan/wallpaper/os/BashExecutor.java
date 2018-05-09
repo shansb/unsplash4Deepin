@@ -50,7 +50,8 @@ public class BashExecutor {
      * @return 执行结果
      */
     public static String executeWithResult(String executable) {
-        System.out.println("cmd:"+ executable);
+        System.out.print("cmd:");
+        System.out.println(executable);
         Process ps;
         try {
             ps = Runtime.getRuntime().exec(executable);

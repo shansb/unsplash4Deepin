@@ -46,7 +46,8 @@ public class WallpaperChanger {
     private OSWallpaper wallpaper;
 
     public WallpaperChanger() {
-        this.savePath = System.getProperty("user.home") + "/Pictures/unsplashWallpapers/";
+        StringBuilder sb = new StringBuilder(System.getProperty("user.home"));
+        this.savePath = sb.append("/Pictures/unsplashWallpapers/").toString();
         this.api = "https://api.unsplash.com/photos/random?client_id=c35c3e173211004dea1b7835216e4840618a9c6f2903689a943126eaaba20b38";
         this.wallpaper = OSWallpaperFactory.getWallpaperInstance();
     }
@@ -64,16 +65,17 @@ public class WallpaperChanger {
         checkPath();
         if (OtherAPI) {
         	int screenWidth=((int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().width);
-        	int screenHeight = ((int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().height); 
-        	fullUrl = "https://picsum.photos/"+screenWidth+"/"+screenHeight+"/?random";
+        	int screenHeight = ((int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().height);
+        	StringBuilder sb = new StringBuilder("https://source.unsplash.com/random/");
+        	fullUrl = sb.append(screenWidth).append("x").append(screenHeight).toString();
 		} else {
 			if (!getUrlsFromAPI()) {
 				System.err.println("无法从API中获得需要的图片地址");
 				return;
-			}			
+			}
 		}
 		if (automatic) {
-			String fileName = format(new Date()) + ".jpg";
+			String fileName = new StringBuilder(format(new Date())).append(".jpg").toString();
 		    BashUrlHandler.download(fullUrl, fileName,savePath);
 		    changeWallpaper(savePath+fileName);
         }
@@ -102,8 +104,7 @@ public class WallpaperChanger {
 	private boolean getUrlsFromAPI() {
         Map<String, Object> pictureInfo = null;
         try {
-            JsonObject json = BashUrlHandler.getXpath(api,savePath+".api");
-            pictureInfo = IOHelper.json2Map(json);
+            pictureInfo = BashUrlHandler.getXpath(api,savePath+".api");
         } catch (Exception e) {
             e.printStackTrace();
             return false;

@@ -19,7 +19,10 @@ public class TrayUI {
      */
     TrayIcon icon =
             new TrayIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resource/TrayIcon16x16.png")));
-
+    /**
+     * 设置
+     */
+    private StringBuilder setting = new StringBuilder("gedit ").append(IOHelper.settingPathName);
     /**
      * 初始化托盘图标行为
      * @param changer
@@ -61,15 +64,13 @@ public class TrayUI {
             public void actionPerformed(ActionEvent e) {
                 File file = new File(IOHelper.settingPathName);
                 if (file.exists()) {
-                    file = null;
-                    BashExecutor.execute("gedit " + IOHelper.settingPathName);
+                    BashExecutor.execute(setting.toString());
                 }
             }
         });
         menu.add(settingItem);
         menu.add(refreshItem);
         menu.add(quitItem);
-        icon.setToolTip("Wallpaper");
         //添加弹出菜单到托盘图标
         icon.setPopupMenu(menu);
         SystemTray tray = SystemTray.getSystemTray();//获取系统托盘

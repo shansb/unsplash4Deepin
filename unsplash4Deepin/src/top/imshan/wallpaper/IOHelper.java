@@ -16,7 +16,8 @@ public class IOHelper {
     /**
      * 参数文件地址
      */
-    public static final String settingPathName = System.getProperty("user.home") + "/.config/unplash4deepin/setting.json";
+    public static final String settingPathName
+            = new StringBuilder(System.getProperty("user.home")).append("/.config/unplash4deepin/setting.json").toString();
 
     /**
      * 从文件中读取内容生成string
