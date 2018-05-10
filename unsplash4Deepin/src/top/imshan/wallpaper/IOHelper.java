@@ -17,8 +17,8 @@ public class IOHelper {
     /**
      * 参数文件地址
      */
-    public static final String settingPathName
-            = new StringBuilder(System.getProperty("user.home")).append("/.config/unplash4deepin/setting.json").toString();
+    public static final String SETTING_PATH
+            = new StringBuilder(System.getProperty("user.home")).append("/.config/unplash4deepin/").toString();
 
     /**
      * 从文件中读取内容生成string
@@ -82,7 +82,7 @@ public class IOHelper {
      * @return 参数Map
      */
     static Map<String, Object> loadSettings() {
-        File setting = new File(settingPathName);
+        File setting = new File(SETTING_PATH + "setting.json");
         Map<String, Object> settingMap = new HashMap<>();
         if (setting.exists()) {
             settingMap = getJsonMapFromFile(setting);

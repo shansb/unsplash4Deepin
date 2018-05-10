@@ -22,14 +22,14 @@ public class TrayUI {
     /**
      * 设置
      */
-    private StringBuilder setting = new StringBuilder("gedit ").append(IOHelper.settingPathName);
+    private StringBuilder setting = new StringBuilder("gedit ").append(IOHelper.SETTING_PATH).append("setting.json");
     /**
      * 初始化托盘图标行为
      * @param changer
      */
     public void initTrayIcon(WallpaperChanger changer) {
 //            icon.setImageAutoSize(true);
-        //3.双击打开主窗口
+        //双击更新
         icon.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {// 单击 1 双击 2
@@ -39,7 +39,7 @@ public class TrayUI {
                 }
             }
         });
-        //4.创建弹出菜单
+        //创建弹出菜单
         PopupMenu menu = new PopupMenu();
         //添加一个用于退出的按钮
         MenuItem quitItem = new MenuItem("Quit");
@@ -62,7 +62,7 @@ public class TrayUI {
         settingItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                File file = new File(IOHelper.settingPathName);
+                File file = new File(setting.toString());
                 if (file.exists()) {
                     BashExecutor.execute(setting.toString());
                 }
@@ -78,7 +78,7 @@ public class TrayUI {
             tray.add(icon);
         } catch (AWTException e1) {
             e1.printStackTrace();
-        }//将托盘图表添加到系统托盘
+        }
     }
 
 	/**

@@ -5,8 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-import com.google.gson.JsonObject;
-
+import top.imshan.wallpaper.os.BashExecutor;
 import top.imshan.wallpaper.os.OSWallpaper;
 import top.imshan.wallpaper.os.OSWallpaperFactory;
 
@@ -25,14 +24,6 @@ public class WallpaperChanger {
      */
     private String savePath;
     /**
-     * unsplash API地址
-     */
-    private String api;
-    /**
-     * 允许使用http://picsum.photos/的API
-     */
-    private boolean OtherAPI =false;
-    /**
      * 大图地址
      */
     private String fullUrl;
@@ -46,30 +37,10 @@ public class WallpaperChanger {
     private OSWallpaper wallpaper;
 
     public WallpaperChanger() {
-        StringBuilder sb = new StringBuilder(System.getProperty("user.home"));
-        this.savePath = sb.append("/Pictures/unsplashWallpapers/").toString();
-        this.api = "https://api.unsplash.com/photos/random?client_id=c35c3e173211004dea1b7835216e4840618a9c6f2903689a943126eaaba20b38";
+        this.savePath = IOHelper.SETTING_PATH+"cache/";
         this.wallpaper = OSWallpaperFactory.getWallpaperInstance();
     }
 
-    /**
-     * 应用配置参数
-     * @param settingMap 设置
-     */
-    public void applySettings(Map<String, Object> settingMap) {
-        Object savePath = settingMap.get("DownloadPath");
-        Object api = settingMap.get("API");
-        Object otherAPI = settingMap.get("EnableOtherAPI");
-        if (null != savePath) {
-            setSavePath((String) savePath);
-        }
-        if (null != api) {
-            setApi((String) api);
-        }
-        if(null != otherAPI) {
-            setOtherAPI((boolean) otherAPI);
-        }
-    }
 
     /**
      * 随机壁纸
@@ -82,26 +53,15 @@ public class WallpaperChanger {
         4. 设置壁纸
          */
         checkPath();
-        if (OtherAPI) {
-        	int screenWidth=((int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().width);
-        	int screenHeight = ((int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().height);
-        	StringBuilder sb = new StringBuilder("https://source.unsplash.com/random/");
-        	fullUrl = sb.append(screenWidth).append("x").append(screenHeight).toString();
-		} else {
-			if (!getUrlsFromAPI()) {
-				System.err.println("无法从API中获得需要的图片地址");
-				return;
-			}
-		}
+        int screenWidth=((int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().width);
+        int screenHeight = ((int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().height);
+        StringBuilder sb = new StringBuilder("https://source.unsplash.com/random/");
+        fullUrl = sb.append(screenWidth).append("x").append(screenHeight).toString();
 		if (automatic) {
 			String fileName = new StringBuilder(format(new Date())).append(".jpg").toString();
 		    BashUrlHandler.download(fullUrl, fileName,savePath);
 		    changeWallpaper(savePath+fileName);
         }
-	}
-
-    public void setOtherAPI(boolean otherAPI) {
-		OtherAPI = otherAPI;
 	}
 
 	/**
@@ -115,46 +75,18 @@ public class WallpaperChanger {
     private synchronized String format(Date date){
 	    return sdf.format(date);
     }
-    /**
-     * 从接口获得图片地址
-     * @return 是否成功获得
-     */
-    @SuppressWarnings("unchecked")
-	private boolean getUrlsFromAPI() {
-        Map<String, Object> pictureInfo = null;
-        try {
-            pictureInfo = BashUrlHandler.getXpath(api,savePath+".api");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        if (null == pictureInfo){
-            return false;
-        }
-        Map<String, Object> urlMap = (Map<String, Object>) pictureInfo.get("urls");
-        fullUrl = (String) urlMap.get("full");
-        if (fullUrl == null) {
-            return  false;
-        }
-        return true;
-    }
 
     /**
-     * 检查路径是否存在，不存在则创建
+     * 检查路径
      */
     private void checkPath() {
+        BashExecutor.execute(new StringBuilder("rm -rf ").append(savePath).toString());
         File file = new File(savePath);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
+        file.mkdirs();
     }
 
     public void setSavePath(String savePath) {
         this.savePath = savePath;
-    }
-
-    public void setApi(String api) {
-        this.api = api;
     }
 
     public void setWallpaper(OSWallpaper wallpaper) {

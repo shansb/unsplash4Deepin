@@ -12,8 +12,7 @@ public class MainAction {
     public static void main(String[] args) {
         Map<String, Object> settingMap = IOHelper.loadSettings();
         WallpaperChanger changer = new WallpaperChanger();
-        changer.applySettings(settingMap);
-        final Integer cycleHour = loadCycleTime(settingMap);
+        final Integer cycleMinutes = loadCycleTime(settingMap);
         TrayUI ui = new TrayUI();
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -25,7 +24,7 @@ public class MainAction {
                             changer.randomWallpaper(true);
                             ui.setIconImage("/resource/TrayIcon16x16.png");
                             System.gc();
-                            changer.lock.wait(TimeUnit.HOURS.toMillis(cycleHour));
+                            changer.lock.wait(TimeUnit.HOURS.toMillis(cycleMinutes));
                         } catch (Exception e) {
                             e.printStackTrace();
                             ui.icon.setImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resource/TrayIcon16x16.png")));
