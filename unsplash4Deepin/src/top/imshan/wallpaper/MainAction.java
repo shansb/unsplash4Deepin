@@ -24,7 +24,7 @@ public class MainAction {
                             changer.randomWallpaper(true);
                             ui.setIconImage("/resource/TrayIcon16x16.png");
                             System.gc();
-                            changer.lock.wait(TimeUnit.HOURS.toMillis(cycleMinutes));
+                            changer.lock.wait(TimeUnit.MINUTES.toMillis(cycleMinutes));
                         } catch (Exception e) {
                             e.printStackTrace();
                             ui.icon.setImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resource/TrayIcon16x16.png")));

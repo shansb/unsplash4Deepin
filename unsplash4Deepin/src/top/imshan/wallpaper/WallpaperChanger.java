@@ -1,5 +1,6 @@
 package top.imshan.wallpaper;
 
+import java.awt.*;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,8 +54,19 @@ public class WallpaperChanger {
         4. 设置壁纸
          */
         checkPath();
-        int screenWidth=((int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().width);
-        int screenHeight = ((int)java.awt.Toolkit.getDefaultToolkit().getScreenSize().height);
+        int screenWidth = 0;
+        int screenHeight = 0;
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice[] gs = ge.getScreenDevices();
+        for (GraphicsDevice currentDevice : gs) {
+            GraphicsConfiguration[] gc = currentDevice.getConfigurations();
+            for (GraphicsConfiguration currentConfiguration:gc) {
+                Rectangle rectangle = currentConfiguration.getBounds();
+                screenHeight = screenHeight > ((Double)rectangle.getHeight()).intValue() ? screenHeight : ((Double)rectangle.getHeight()).intValue();
+                screenWidth = screenWidth > ((Double)rectangle.getWidth()).intValue() ? screenWidth : ((Double)rectangle.getWidth()).intValue();
+            }
+        }
+
         StringBuilder sb = new StringBuilder("https://source.unsplash.com/random/");
         fullUrl = sb.append(screenWidth).append("x").append(screenHeight).toString();
 		if (automatic) {
