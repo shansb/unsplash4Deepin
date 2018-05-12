@@ -1,12 +1,11 @@
 package top.imshan.wallpaper;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * 参数配置
@@ -18,74 +17,45 @@ public class IOHelper {
      * 参数文件地址
      */
     public static final String SETTING_PATH
-            = new StringBuilder(System.getProperty("user.home")).append("/.config/unplash4deepin/").toString();
+            = System.getProperty("user.home") + "/.config/unplash4deepin/";
+    /**
+     * 参数文档
+     */
+    public static final String SETTING_FILE = SETTING_PATH + "setting";
 
     /**
-     * 从文件中读取内容生成string
-     * @param file 已存在的文件
-     * @return 内容字符串
+     * 加载property
+     * @param filePath 文件路径
+     * @return 配置
      */
-    public static String readStringFromFile(File file) {
-        String content = "{}";
+    private static Properties readPropertyFromFile(String filePath) {
+        Properties properties = new Properties();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            StringBuffer sb1 = new StringBuffer();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                sb1.append(line).append("\n");
-            }
-            content = sb1.toString();
-            reader.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            properties.load(new FileInputStream(filePath));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return content;
-    }
-
-    /**
-     * 简单的转换
-     * @param json JsonObject
-     * @return map
-     */
-    @SuppressWarnings("unchecked")
-    public static Map<String, Object> json2Map(JsonObject json){
-        Gson gson = new Gson();
-        Map<String, Object> jsonMap = gson.fromJson(json, Map.class);
-        return jsonMap;
-    }
-
-    /**
-     * 字符串解析为json对象
-     * @param jsonString 字符串
-     * @return json对象
-     */
-    public static JsonObject string2Json(String jsonString) {
-        JsonParser parse =new JsonParser();
-        return (JsonObject) parse.parse(jsonString);
-    }
-
-    /**
-     * 从文本格式中的json转换为Map
-     * @param file
-     * @return
-     */
-    public static Map<String, Object> getJsonMapFromFile(File file) {
-        String settings = readStringFromFile(file);
-        JsonObject settingsJson = string2Json(settings);
-        return json2Map(settingsJson);
+        return properties;
     }
 
     /**
      * 加载参数
      * @return 参数Map
      */
-    static Map<String, Object> loadSettings() {
-        File setting = new File(SETTING_PATH + "setting.json");
+    public static Map<String, Object> loadSettings() {
         Map<String, Object> settingMap = new HashMap<>();
-        if (setting.exists()) {
-            settingMap = getJsonMapFromFile(setting);
+        Properties properties = readPropertyFromFile(SETTING_FILE);
+        Enumeration enumeration = properties.propertyNames();
+        while (enumeration.hasMoreElements()) {
+            String key = (String) enumeration.nextElement();
+            String value = properties.getProperty(key);
+            if (value != null) {
+                if (value.contains("#")) {
+                    value = value.substring(0, value.indexOf("#"));
+                }
+                value = value.trim();
+            }
+            settingMap.put(key,value);
         }
         return settingMap;
     }

@@ -22,7 +22,7 @@ public class TrayUI {
     /**
      * 设置
      */
-    private StringBuilder setting = new StringBuilder("gedit ").append(IOHelper.SETTING_PATH).append("setting.json");
+    private StringBuilder setting = new StringBuilder("gedit ").append(IOHelper.SETTING_FILE);
     /**
      * 初始化托盘图标行为
      * @param changer
@@ -62,7 +62,7 @@ public class TrayUI {
         settingItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                File file = new File(setting.toString());
+                File file = new File(IOHelper.SETTING_FILE);
                 if (file.exists()) {
                     BashExecutor.execute(setting.toString());
                 }

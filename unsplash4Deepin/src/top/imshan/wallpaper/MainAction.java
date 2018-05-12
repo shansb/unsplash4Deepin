@@ -48,7 +48,7 @@ public class MainAction {
 	 * @return 更新周期（分）
 	 */
 	private static Integer loadCycleTime(Map<String, Object> settingMap) {
-		Integer cycleTime = null;
+		Integer cycleTime;
         try {
             cycleTime = settingMap.get("CycleTime") == null ? 30 : Integer.parseInt((String) settingMap.get("CycleTime"));
         } catch (NumberFormatException e) {
