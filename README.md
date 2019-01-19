@@ -4,6 +4,11 @@
 
 ![Logo](https://github.com/shansb/unsplash4Deepin/blob/master/unsplash4Deepin/src/resource/Taskbar.png?raw=true)
 
+---
+
+推荐使用QT版本：https://github.com/shansb/unsplash4deepin-qt
+
+---
 
 ### 安装
 
